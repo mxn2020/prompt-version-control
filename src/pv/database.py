@@ -6,7 +6,7 @@ from pathlib import Path
 
 from alembic import command as alembic_command
 from alembic.config import Config as AlembicConfig
-from sqlalchemy import create_engine, inspect
+from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -51,7 +51,7 @@ def get_session_factory(db_path: str | Path) -> sessionmaker[Session]:
 def init_db(db_path: str | Path) -> None:
     """Initialise the database by running Alembic migrations to head.
 
-    This is idempotent – safe to call multiple times.  It creates parent
+    This is idempotent - safe to call multiple times.  It creates parent
     directories and the SQLite file as needed, then applies any pending
     Alembic migrations so that ``alembic_version`` is always present.
     """
@@ -59,7 +59,7 @@ def init_db(db_path: str | Path) -> None:
 
     db_path = Path(db_path)
     db_path.parent.mkdir(parents=True, exist_ok=True)
-    engine = get_engine(db_path)
+    get_engine(db_path)
     db_url = f"sqlite:///{db_path}"
     cfg = _alembic_cfg(db_url)
     # Silence Alembic's INFO logging so it doesn't pollute CLI output.

@@ -36,10 +36,16 @@ app = typer.Typer(
 def main(
     version: Annotated[
         bool,
-        typer.Option("--version", help="Show version and exit.", callback=_version_callback, is_eager=True),
+        typer.Option(
+            "--version",
+            help="Show version and exit.",
+            callback=_version_callback,
+            is_eager=True,
+        ),
     ] = False,
 ) -> None:
     """prompt-version-control: version your prompts locally."""
+
 
 console = Console()
 

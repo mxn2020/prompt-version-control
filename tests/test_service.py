@@ -130,6 +130,14 @@ class TestTagManagement:
         ver = service.get_version("p", 1)
         assert "remove-me" not in [t.name for t in ver.tags]
 
+    def test_tag_shared_across_versions(self, service: PromptService) -> None:
+        service.add_version("p", "v1", tags=["shared"])
+        service.add_version("p", "v2", tags=["shared"])
+        v1 = service.get_version("p", 1)
+        v2 = service.get_version("p", 2)
+        assert "shared" in [t.name for t in v1.tags]
+        assert "shared" in [t.name for t in v2.tags]
+
 
 class TestDeletePrompt:
     def test_delete_prompt(self, service: PromptService) -> None:

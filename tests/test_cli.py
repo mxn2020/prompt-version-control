@@ -28,6 +28,33 @@ class TestInit:
         assert result.exit_code == 0
         assert "initialized" in result.output.lower() or "✓" in result.output
 
+    def test_init_creates_alembic_version(self, tmp_path: Path) -> None:
+        import sqlite3
+
+        db = tmp_path / "test.db"
+        _invoke("init", db=db)
+        conn = sqlite3.connect(str(db))
+        tables = [r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")]
+        assert "alembic_version" in tables
+        rows = conn.execute("SELECT version_num FROM alembic_version").fetchall()
+        assert len(rows) == 1
+        conn.close()
+
+    def test_init_idempotent(self, tmp_path: Path) -> None:
+        db = tmp_path / "test.db"
+        r1 = _invoke("init", db=db)
+        r2 = _invoke("init", db=db)
+        assert r1.exit_code == 0
+        assert r2.exit_code == 0
+
+
+class TestVersion:
+    def test_version_flag(self) -> None:
+        result = runner.invoke(app, ["--version"])
+        assert result.exit_code == 0
+        assert "pv" in result.output
+        assert "0.1.0" in result.output
+
 
 class TestAdd:
     def test_add_version(self, tmp_path: Path) -> None:

@@ -12,9 +12,17 @@ from rich.console import Console
 from rich.table import Table
 from sqlalchemy.orm import Session
 
+from pv import __version__
 from pv.config import default_db_path
 from pv.database import get_session_factory, init_db, reset_engine
 from pv.services.prompt_service import PromptService
+
+
+def _version_callback(value: bool) -> None:
+    if value:
+        print(f"pv {__version__}")
+        raise typer.Exit()
+
 
 app = typer.Typer(
     name="pv",
@@ -22,6 +30,16 @@ app = typer.Typer(
     add_completion=False,
     no_args_is_help=True,
 )
+
+
+@app.callback()
+def main(
+    version: Annotated[
+        bool,
+        typer.Option("--version", help="Show version and exit.", callback=_version_callback, is_eager=True),
+    ] = False,
+) -> None:
+    """prompt-version-control: version your prompts locally."""
 
 console = Console()
 

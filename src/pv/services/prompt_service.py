@@ -97,11 +97,11 @@ class PromptService:
             content_hash=self._content_hash(content),
             note=note,
         )
+        self._session.add(version)
         if tags:
             for tag_name in tags:
                 version.tags.append(self._get_or_create_tag(tag_name))
 
-        self._session.add(version)
         self._session.flush()
         return version
 

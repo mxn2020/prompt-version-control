@@ -57,7 +57,10 @@ class PromptVersion(Base):
 
     prompt: Mapped[Prompt] = relationship("Prompt", back_populates="versions")
     tags: Mapped[list[Tag]] = relationship(
-        "Tag", secondary=prompt_version_tags, back_populates="versions"
+        "Tag",
+        secondary=prompt_version_tags,
+        back_populates="versions",
+        overlaps="versions",
     )
 
     def __repr__(self) -> str:
@@ -71,7 +74,10 @@ class Tag(Base):
     name: Mapped[str] = mapped_column(String(255), unique=True, nullable=False, index=True)
 
     versions: Mapped[list[PromptVersion]] = relationship(
-        "PromptVersion", secondary=prompt_version_tags, back_populates="tags"
+        "PromptVersion",
+        secondary=prompt_version_tags,
+        back_populates="tags",
+        overlaps="tags",
     )
 
     def __repr__(self) -> str:

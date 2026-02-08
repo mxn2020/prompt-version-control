@@ -12,6 +12,7 @@ build/
 venv/
 env/
 .env
+.audit_venv/
 *.db
 *.sqlite
 *.sqlite3

@@ -5,14 +5,14 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from typer.testing import CliRunner
+from typer.testing import CliRunner, Result
 
 from pv.cli import app
 
 runner = CliRunner()
 
 
-def _invoke(*args: str, db: Path | None = None) -> object:
+def _invoke(*args: str, db: Path | None = None) -> Result:
     """Helper to invoke the CLI with a temp DB."""
     cmd = list(args)
     if db:

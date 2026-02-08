@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 import pytest
 
@@ -108,7 +109,7 @@ class TestExport:
         assert len(result["versions"]) == 2
         assert result["versions"][0]["tags"] == ["t1"]
 
-    def test_export_to_file(self, service: PromptService, tmp_path) -> None:
+    def test_export_to_file(self, service: PromptService, tmp_path: Path) -> None:
         service.add_version("p", "content")
         path = tmp_path / "export.json"
         service.export_to_file("p", path)
